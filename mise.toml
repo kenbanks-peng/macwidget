@@ -1,0 +1,50 @@
+[tasks.build]
+description = "Build macwidget release binary"
+run = "swift build -c release"
+
+[tasks.deploy]
+description = "Build, install, and load the macwidget LaunchAgent"
+run = '''
+set -euo pipefail
+
+LABEL="com.kenbanks.macwidget"
+BIN_DIR="$HOME/.local/bin"
+BIN="$BIN_DIR/macwidget"
+PLIST_SRC="launchd/$LABEL.plist"
+PLIST_DST="$HOME/Library/LaunchAgents/$LABEL.plist"
+
+swift build -c release
+
+mkdir -p "$BIN_DIR" "$HOME/Library/LaunchAgents" "$HOME/Library/Logs"
+install -m 755 ".build/release/macwidget" "$BIN"
+install -m 644 "$PLIST_SRC" "$PLIST_DST"
+
+launchctl bootout "gui/$(id -u)" "$PLIST_DST" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$PLIST_DST"
+launchctl kickstart -k "gui/$(id -u)/$LABEL"
+
+echo "Deployed $BIN"
+echo "Loaded $PLIST_DST"
+'''
+
+[tasks.undeploy]
+description = "Unload the macwidget LaunchAgent"
+run = '''
+set -euo pipefail
+
+LABEL="com.kenbanks.macwidget"
+PLIST_DST="$HOME/Library/LaunchAgents/$LABEL.plist"
+
+launchctl bootout "gui/$(id -u)" "$PLIST_DST" 2>/dev/null || true
+rm -f "$PLIST_DST"
+
+echo "Unloaded $LABEL"
+'''
+
+[tasks.restart]
+description = "Restart the deployed macwidget LaunchAgent"
+run = '''
+set -euo pipefail
+launchctl kickstart -k "gui/$(id -u)/com.kenbanks.macwidget"
+'''
+
