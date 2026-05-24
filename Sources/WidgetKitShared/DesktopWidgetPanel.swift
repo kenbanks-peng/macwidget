@@ -1,14 +1,17 @@
 import AppKit
 
-final class DesktopWidgetPanel: NSPanel {
-    private let frameAutosaveKey = "DesktopWidgetPanelFrame"
+public final class DesktopWidgetPanel: NSPanel {
+    private let frameAutosaveKey: String
 
-    override init(
+    public init(
         contentRect: NSRect,
+        frameAutosaveKey: String,
         styleMask style: NSWindow.StyleMask,
         backing backingStoreType: NSWindow.BackingStoreType,
         defer flag: Bool
     ) {
+        self.frameAutosaveKey = frameAutosaveKey
+
         super.init(
             contentRect: contentRect,
             styleMask: [.borderless, .nonactivatingPanel, .resizable],
@@ -33,6 +36,6 @@ final class DesktopWidgetPanel: NSPanel {
         setFrameAutosaveName(frameAutosaveKey)
     }
 
-    override var canBecomeKey: Bool { true }
-    override var canBecomeMain: Bool { false }
+    public override var canBecomeKey: Bool { true }
+    public override var canBecomeMain: Bool { false }
 }

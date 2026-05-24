@@ -1,17 +1,17 @@
 import SwiftUI
 
-final class DraggableHostingView<Content: View>: NSHostingView<Content> {
+public final class DraggableHostingView<Content: View>: NSHostingView<Content> {
     private var dragStartMouseLocation: NSPoint?
     private var dragStartWindowOrigin: NSPoint?
 
-    override func mouseDown(with event: NSEvent) {
+    public override func mouseDown(with event: NSEvent) {
         guard let window else { return }
 
         dragStartMouseLocation = NSEvent.mouseLocation
         dragStartWindowOrigin = window.frame.origin
     }
 
-    override func mouseDragged(with event: NSEvent) {
+    public override func mouseDragged(with event: NSEvent) {
         guard
             let window,
             let dragStartMouseLocation,
@@ -25,7 +25,7 @@ final class DraggableHostingView<Content: View>: NSHostingView<Content> {
         ))
     }
 
-    override func mouseUp(with event: NSEvent) {
+    public override func mouseUp(with event: NSEvent) {
         dragStartMouseLocation = nil
         dragStartWindowOrigin = nil
     }

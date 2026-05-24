@@ -1,9 +1,25 @@
+import AppKit
 import SwiftUI
+import WidgetKitShared
 
-struct DesktopCPUWidgetView: View {
+public struct CPUWidget {
+    @MainActor
+    public static func make() -> DesktopWidget<DesktopCPUWidgetView> {
+        let model = CPUHistoryModel()
+        model.start()
+
+        return DesktopWidget(
+            id: "cpu",
+            defaultFrame: NSRect(x: 80, y: 120, width: 320, height: 170),
+            content: DesktopCPUWidgetView(model: model)
+        )
+    }
+}
+
+public struct DesktopCPUWidgetView: View {
     @ObservedObject var model: CPUHistoryModel
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
                 Text("CPU")

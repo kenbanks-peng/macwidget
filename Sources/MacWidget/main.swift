@@ -1,26 +1,16 @@
 import AppKit
-import SwiftUI
+import CPUWidget
+import DummyWidget
+import WidgetKitShared
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
-    private var window: NSPanel!
-    private var model: CPUHistoryModel!
+    private let widgetManager = DesktopWidgetManager()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
 
-        model = CPUHistoryModel()
-        let contentView = DesktopCPUWidgetView(model: model)
-
-        window = DesktopWidgetPanel(
-            contentRect: NSRect(x: 80, y: 120, width: 320, height: 170),
-            styleMask: [.borderless, .nonactivatingPanel],
-            backing: .buffered,
-            defer: false
-        )
-        window.contentView = DraggableHostingView(rootView: contentView)
-        window.makeKeyAndOrderFront(nil)
-
-        model.start()
+        widgetManager.add(CPUWidget.make())
+        widgetManager.add(DummyWidget.make())
     }
 }
 
@@ -28,4 +18,3 @@ let app = NSApplication.shared
 let delegate = AppDelegate()
 app.delegate = delegate
 app.run()
-

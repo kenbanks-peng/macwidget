@@ -8,7 +8,18 @@ let package = Package(
         .executable(name: "macwidget", targets: ["MacWidget"])
     ],
     targets: [
-        .executableTarget(name: "MacWidget")
+        .target(name: "WidgetKitShared"),
+        .target(
+            name: "CPUWidget",
+            dependencies: ["WidgetKitShared"]
+        ),
+        .target(
+            name: "DummyWidget",
+            dependencies: ["WidgetKitShared"]
+        ),
+        .executableTarget(
+            name: "MacWidget",
+            dependencies: ["WidgetKitShared", "CPUWidget", "DummyWidget"]
+        )
     ]
 )
-
