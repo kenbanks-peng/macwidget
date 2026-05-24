@@ -112,7 +112,8 @@ final class CPUUsageSampler {
 
                 return ProcessCPUUsage(name: String(name), cpuPercent: cpuPercent)
             }
-            .prefix(limit)
+            .prefix(limit + 1)
+            .dropFirst()
             .map { $0 }
     }
 }

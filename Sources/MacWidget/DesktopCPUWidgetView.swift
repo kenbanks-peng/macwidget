@@ -48,12 +48,27 @@ struct DesktopCPUWidgetView: View {
                         .stroke(.green.opacity(0.28), lineWidth: 1)
                 }
         }
+        .overlay(alignment: .bottomTrailing) {
+            ResizeHandle()
+                .padding(8)
+        }
         .padding(1)
     }
 
     private var latestText: String {
         guard let usage = model.latestUsage else { return "--%" }
         return usage.formatted(.percent.precision(.fractionLength(0)))
+    }
+}
+
+struct ResizeHandle: View {
+    var body: some View {
+        Image(systemName: "arrow.up.left.and.arrow.down.right")
+            .font(.caption2.weight(.semibold))
+            .foregroundStyle(.green.opacity(0.55))
+            .padding(4)
+            .contentShape(Rectangle())
+            .help("Drag to resize")
     }
 }
 

@@ -1,6 +1,8 @@
 import AppKit
 
 final class DesktopWidgetPanel: NSPanel {
+    private let frameAutosaveKey = "DesktopWidgetPanelFrame"
+
     override init(
         contentRect: NSRect,
         styleMask style: NSWindow.StyleMask,
@@ -9,7 +11,7 @@ final class DesktopWidgetPanel: NSPanel {
     ) {
         super.init(
             contentRect: contentRect,
-            styleMask: [.borderless, .nonactivatingPanel],
+            styleMask: [.borderless, .nonactivatingPanel, .resizable],
             backing: backingStoreType,
             defer: flag
         )
@@ -20,14 +22,17 @@ final class DesktopWidgetPanel: NSPanel {
         hidesOnDeactivate = false
         ignoresMouseEvents = false
         isMovableByWindowBackground = true
+        minSize = NSSize(width: 260, height: 150)
         collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
 
         // This puts the panel behind normal windows but above the wallpaper,
         // approximating a desktop widget without WidgetKit/Xcode/signing.
         level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopIconWindow)) + 1)
+
+        setFrameUsingName(frameAutosaveKey)
+        setFrameAutosaveName(frameAutosaveKey)
     }
 
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 }
-
