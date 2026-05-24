@@ -1,6 +1,5 @@
 import AppKit
 import CPUWidget
-import DummyWidget
 import WidgetKitShared
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
@@ -10,7 +9,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.setActivationPolicy(.accessory)
 
         widgetManager.add(CPUWidget.make())
-        widgetManager.add(DummyWidget.make())
     }
 }
 

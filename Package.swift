@@ -13,13 +13,9 @@ let package = Package(
             name: "CPUWidget",
             dependencies: ["WidgetKitShared"]
         ),
-        .target(
-            name: "DummyWidget",
-            dependencies: ["WidgetKitShared"]
-        ),
         .executableTarget(
             name: "MacWidget",
-            dependencies: ["WidgetKitShared", "CPUWidget", "DummyWidget"]
+            dependencies: ["WidgetKitShared", "CPUWidget"]
         )
     ]
 )
