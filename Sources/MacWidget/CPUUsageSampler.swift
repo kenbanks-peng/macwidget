@@ -1,6 +1,12 @@
 import Darwin
 import Foundation
 
+struct ProcessCPUUsage: Identifiable, Equatable {
+    let id = UUID()
+    let name: String
+    let cpuPercent: Double
+}
+
 final class CPUUsageSampler {
     private var previousLoad: [processor_cpu_load_info]?
     private var previousCount: mach_msg_type_number_t = 0
@@ -72,5 +78,41 @@ final class CPUUsageSampler {
         guard totalTicks > 0 else { return nil }
         return min(max(1 - (Double(idleTicks) / Double(totalTicks)), 0), 1)
     }
-}
 
+    func sampleTopProcesses(limit: Int = 3) -> [ProcessCPUUsage] {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/bin/ps")
+        process.arguments = ["-arcxo", "comm=,pcpu="]
+
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        process.standardError = Pipe()
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+        } catch {
+            return []
+        }
+
+        guard process.terminationStatus == 0 else { return [] }
+
+        let data = pipe.fileHandleForReading.readDataToEndOfFile()
+        guard let output = String(data: data, encoding: .utf8) else { return [] }
+
+        return output
+            .split(separator: "\n")
+            .compactMap { line -> ProcessCPUUsage? in
+                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                guard let separator = trimmed.lastIndex(of: " ") else { return nil }
+
+                let name = trimmed[..<separator].trimmingCharacters(in: .whitespaces)
+                let cpuText = trimmed[trimmed.index(after: separator)...]
+                guard !name.isEmpty, let cpuPercent = Double(cpuText) else { return nil }
+
+                return ProcessCPUUsage(name: String(name), cpuPercent: cpuPercent)
+            }
+            .prefix(limit)
+            .map { $0 }
+    }
+}

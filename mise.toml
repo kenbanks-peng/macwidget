@@ -1,3 +1,7 @@
+[tasks.dev]
+description = "Run dev version"
+run = "swift run macwidget"
+
 [tasks.build]
 description = "Build macwidget release binary"
 run = "swift build -c release"

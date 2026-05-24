@@ -19,6 +19,25 @@ struct DesktopCPUWidgetView: View {
 
             CPUHistoryGraph(samples: model.samples)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            if !model.topProcesses.isEmpty {
+                VStack(spacing: 4) {
+                    ForEach(model.topProcesses) { process in
+                        HStack(spacing: 8) {
+                            Text(process.name)
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+
+                            Spacer(minLength: 8)
+
+                            Text(process.cpuPercent.formatted(.number.precision(.fractionLength(1))) + "%")
+                                .monospacedDigit()
+                        }
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.white.opacity(0.82))
+            }
         }
         .padding(14)
         .background {
@@ -91,4 +110,3 @@ struct CPUHistoryGraph: View {
         context.stroke(grid, with: .color(.green.opacity(0.16)), lineWidth: 0.5)
     }
 }
-
