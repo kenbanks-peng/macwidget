@@ -17,9 +17,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
-        window.contentView = NSHostingView(rootView: contentView)
+        window.contentView = DraggableHostingView(rootView: contentView)
         window.makeKeyAndOrderFront(nil)
-        window.orderBack(nil)
 
         model.start()
     }

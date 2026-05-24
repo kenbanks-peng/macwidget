@@ -18,12 +18,13 @@ final class DesktopWidgetPanel: NSPanel {
         backgroundColor = .clear
         hasShadow = true
         hidesOnDeactivate = false
+        ignoresMouseEvents = false
         isMovableByWindowBackground = true
         collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
 
         // This puts the panel behind normal windows but above the wallpaper,
         // approximating a desktop widget without WidgetKit/Xcode/signing.
-        level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopIconWindow)))
+        level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopIconWindow)) + 1)
     }
 
     override var canBecomeKey: Bool { true }
