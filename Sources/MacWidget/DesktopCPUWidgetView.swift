@@ -6,7 +6,7 @@ struct DesktopCPUWidgetView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .firstTextBaseline) {
-                Text("CPU History")
+                Text("CPU")
                     .font(.headline.weight(.semibold))
                     .foregroundStyle(.green)
 
@@ -109,6 +109,12 @@ struct CPUHistoryGraph: View {
 
     private func drawGrid(in rect: CGRect, context: inout GraphicsContext) {
         var grid = Path()
+        var bounds = Path()
+
+        bounds.move(to: CGPoint(x: 0, y: 0.5))
+        bounds.addLine(to: CGPoint(x: rect.width, y: 0.5))
+        bounds.move(to: CGPoint(x: 0, y: rect.height - 0.5))
+        bounds.addLine(to: CGPoint(x: rect.width, y: rect.height - 0.5))
 
         for index in 1..<4 {
             let y = rect.height * CGFloat(index) / 4
@@ -123,5 +129,6 @@ struct CPUHistoryGraph: View {
         }
 
         context.stroke(grid, with: .color(.green.opacity(0.16)), lineWidth: 0.5)
+        context.stroke(bounds, with: .color(.green.opacity(0.48)), lineWidth: 1)
     }
 }

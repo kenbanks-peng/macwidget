@@ -113,7 +113,8 @@ final class CPUUsageSampler {
                 return ProcessCPUUsage(name: String(name), cpuPercent: cpuPercent)
             }
             .prefix(limit + 1)
-            .dropFirst()
+            .filter { URL(fileURLWithPath: $0.name).lastPathComponent != "top" }
+            .prefix(limit)
             .map { $0 }
     }
 }
