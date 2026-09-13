@@ -22,7 +22,7 @@ swift build -c release
 mkdir -p "$BIN_DIR" "$HOME/Library/LaunchAgents" "$HOME/Library/Logs"
 install -m 755 ".build/release/macwidget" "$BIN"
 install -m 644 "$PLIST_SRC" "$PLIST_DST"
-/usr/libexec/PlistBuddy -c "Set :ProgramArguments:0 $BIN" "$PLIST_DST"
+/usr/libexec/PlistBuddy -c "Set :ProgramArguments:0 $HOME/.local/bin/macwidget" "$PLIST_DST"
 /usr/libexec/PlistBuddy -c "Set :StandardOutPath $HOME/Library/Logs/macwidget.log" "$PLIST_DST"
 /usr/libexec/PlistBuddy -c "Set :StandardErrorPath $HOME/Library/Logs/macwidget.err.log" "$PLIST_DST"
 plutil -lint "$PLIST_DST"
