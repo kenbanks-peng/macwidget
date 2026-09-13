@@ -58,8 +58,8 @@ public struct DesktopCPUWidgetView: View {
         .padding(14)
         .background {
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                // Catppuccin Macchiato Base (#24273A).
-                .fill(Color(red: 36 / 255, green: 39 / 255, blue: 58 / 255).opacity(0.78))
+                // Catppuccin Mocha Crust (#11111B), fully opaque.
+                .fill(Color(red: 17 / 255, green: 17 / 255, blue: 27 / 255))
                 .overlay {
                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                         .stroke(.green.opacity(0.28), lineWidth: 1)
