@@ -12,7 +12,7 @@ run = '''
 set -euo pipefail
 
 LABEL="com.kenbanks.macwidget"
-BIN_DIR="$HOME/.local/bin"
+BIN_DIR="./bin"
 BIN="$BIN_DIR/macwidget"
 PLIST_SRC="launchd/$LABEL.plist"
 PLIST_DST="$HOME/Library/LaunchAgents/$LABEL.plist"
